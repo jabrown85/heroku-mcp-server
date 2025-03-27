@@ -1,0 +1,59 @@
+{
+  "name": "@heroku/mcp-server",
+  "description": "Heroku Platform MCP Server",
+  "version": "0.0.0",
+  "author": "Heroku",
+  "bugs": "https://github.com/heroku/heroku-mcp-server/issues",
+  "bin": {
+    "heroku-mcp-server": "./dist/index.js"
+  },
+  "dependencies": {
+    "tslib": "^2.8.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.23.0",
+    "@types/chai": "^5.2.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.13.13",
+    "@types/sinon": "^17.0.4",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "chai": "^5.2.0",
+    "eslint": "^9.23",
+    "eslint-config-salesforce-typescript": "^3.4.0",
+    "eslint-plugin-jsdoc": "^50.6.9",
+    "husky": "^9.1.7",
+    "mocha": "^11.1.0",
+    "nock": "^14.0.1",
+    "np": "^10.2.0",
+    "nyc": "^17.1.0",
+    "prettier": "^3.5.3",
+    "shx": "^0.4.0",
+    "sinon": "^20.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "/dist"
+  ],
+  "homepage": "https://github.com/heroku/heroku-mcp-server",
+  "keywords": [
+    "heroku",
+    "mcp"
+  ],
+  "license": "Apache-2.0",
+  "repository": "heroku/heroku-mcp-server",
+  "scripts": {
+    "build": "rm -rf dist && tsc && shx chmod +x dist/*.js",
+    "format": "prettier . --write --config ./.prettier.mjs",
+    "lint": "cd src && eslint ./ --ext ts",
+    "posttest": "npm run lint",
+    "prepare": "husky",
+    "pretest": "npm run build",
+    "test": "nyc mocha --forbid-only"
+  }
+}

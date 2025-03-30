@@ -1,4 +1,4 @@
-import { defineConfig, globalIgnores } from 'eslint/config';
+import { defineConfig } from 'eslint/config';
 import tsParser from '@typescript-eslint/parser';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,8 +14,13 @@ const compat = new FlatCompat({
 });
 
 export default defineConfig([
-  globalIgnores(['**/out', '**/dist', '**/*.spec.ts', '**/*.d.ts']),
   {
+    files: ['**/*.js', '**/*.mjs'],
+    ...js.configs.recommended
+  },
+  {
+    files: ['**/*.ts'],
+    ignores: ['**/dist', '**/*.spec.ts', '**/*.d.ts'],
     extends: compat.extends(
       'eslint-config-salesforce-typescript',
       'plugin:jsdoc/recommended-typescript-error',

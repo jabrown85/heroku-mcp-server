@@ -87,11 +87,24 @@ Add this to your Cursor mcp.json:
 
 ## Debugging
 
-You can use the MCP inspector to debug the server.
+You can use the MCP inspector or the vscode run/debug to run and debug the server.
+
+1. link the project as a global CLI using `npm link` from the project root
+2. build using `npm run build:dev`, or;
+3. to watch for file changes and build automatically use `npm run build:watch`
+
+Option 1 - use the @modelcontextprotocol/inspector (no breakpoints in code):
 
 ```
+# Breakpoints are not available
 npx @modelcontextprotocol/inspector heroku-mcp-server
 ```
+
+Option 2 - use the VSCode run/debug launcher (fully functional breakpoints in code):
+
+1. Locate and click on the run debug
+2. select the configuration labeled "MCP Server Launcher" in the dropdown
+3. click on the green run/debug button
 
 Or if you've installed the package in a specific directory or are developing on it:
 
@@ -99,3 +112,94 @@ Or if you've installed the package in a specific directory or are developing on 
 cd path/to/servers/src/git
 npx @modelcontextprotocol/inspector dist/index.js
 ```
+
+### VS Code / Cursor Debugging Setup
+
+To setup local debugging with breakpoints:
+
+1. Store your Heroku auth token in VS Code user settings:
+
+   - Open Command Palette (Cmd/Ctrl + Shift + P)
+   - Type "Preferences: Open User Settings (JSON)"
+   - Add the following:
+
+   ```json
+   {
+     "heroku.mcp.authToken": "your-token-here"
+   }
+   ```
+
+2. Create or update `.vscode/launch.json`:
+
+   ```json
+   {
+     "version": "0.2.0",
+     "configurations": [
+       {
+         "type": "node",
+         "request": "launch",
+         "name": "MCP Server Launcher",
+         "skipFiles": ["<node_internals>/**"],
+         "program": "${workspaceFolder}/node_modules/@modelcontextprotocol/inspector/bin/cli.js",
+         "outFiles": ["${workspaceFolder}/**/dist/**/*.js"],
+         "env": {
+           "HEROKU_API_KEY": "${config:heroku.mcp.authToken}",
+           "DEBUG": "true"
+         },
+         "args": ["heroku-mcp-server"],
+         "sourceMaps": true,
+         "console": "integratedTerminal",
+         "internalConsoleOptions": "neverOpen",
+         "preLaunchTask": "npm: build:watch"
+       },
+       {
+         "type": "node",
+         "request": "attach",
+         "name": "Attach to Debug Hook Process",
+         "port": 9332,
+         "skipFiles": ["<node_internals>/**"],
+         "sourceMaps": true,
+         "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+       },
+       {
+         "type": "node",
+         "request": "attach",
+         "name": "Attach to REPL Process",
+         "port": 9333,
+         "skipFiles": ["<node_internals>/**"],
+         "sourceMaps": true,
+         "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+       }
+     ],
+     "compounds": [
+       {
+         "name": "Attach to MCP Server",
+         "configurations": ["Attach to Debug Hook Process", "Attach to REPL Process"]
+       }
+     ]
+   }
+   ```
+
+3. Create `.vscode/tasks.json`:
+
+   ```json
+   {
+     "version": "2.0.0",
+     "tasks": [
+       {
+         "type": "npm",
+         "script": "build:watch",
+         "group": {
+           "kind": "build",
+           "isDefault": true
+         },
+         "problemMatcher": ["$tsc"]
+       }
+     ]
+   }
+   ```
+
+4. To debug:
+   - Set breakpoints in your TypeScript files
+   - Press F5 or use the Run and Debug sidebar
+   - The debugger will automatically build your TypeScript files before launching

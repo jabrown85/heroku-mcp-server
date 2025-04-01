@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { handleCliError } from '../utils/handle-cli-error.js';
+import { handleCliOutput } from '../utils/handle-cli-output.js';
 import { CommandBuilder } from '../utils/command-builder.js';
 import { TOOL_COMMAND_MAP } from '../utils/tool-commands.js';
 import { HerokuREPL } from '../repl/heroku-cli-repl.js';
@@ -85,12 +85,8 @@ export const registerListAppsTool = (server: McpServer, herokuRepl: HerokuREPL):
         })
         .build();
 
-      try {
-        const output = await herokuRepl.executeCommand(command);
-        return { content: [{ type: 'text', text: output }] };
-      } catch (error) {
-        return handleCliError(error);
-      }
+      const output = await herokuRepl.executeCommand(command);
+      return handleCliOutput(output);
     }
   );
 };
@@ -146,12 +142,8 @@ export const registerGetAppInfoTool = (server: McpServer, herokuRepl: HerokuREPL
         })
         .build();
 
-      try {
-        const output = await herokuRepl.executeCommand(command);
-        return { content: [{ type: 'text', text: output }] };
-      } catch (error) {
-        return handleCliError(error);
-      }
+      const output = await herokuRepl.executeCommand(command);
+      return handleCliOutput(output);
     }
   );
 };
@@ -224,12 +216,8 @@ export const registerCreateAppTool = (server: McpServer, herokuRepl: HerokuREPL)
         })
         .build();
 
-      try {
-        const output = await herokuRepl.executeCommand(command);
-        return { content: [{ type: 'text', text: output }] };
-      } catch (error) {
-        return handleCliError(error);
-      }
+      const output = await herokuRepl.executeCommand(command);
+      return handleCliOutput(output);
     }
   );
 };
@@ -265,21 +253,18 @@ export const registerRenameAppTool = (server: McpServer, herokuRepl: HerokuREPL)
   server.tool(
     'rename_app',
     'Rename an existing Heroku application. Use this tool when a user needs to: ' +
-      "1) Change an app's name, or 2) Resolve naming conflicts. Requires both current app name and desired new " +
-      'name. The tool validates name availability and handles the rename process.',
+      "1) Change an app's name, or 2) Resolve naming conflicts. " +
+      'Requires both current app name and desired new name. ' +
+      'The tool validates name availability and handles the rename process.',
     renameAppOptionsSchema.shape,
     async (options: RenameAppOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.RENAME_APP)
-        .addPositionalArguments({ newName: options.newName })
         .addFlags({ app: options.app })
+        .addPositionalArguments({ newName: options.newName })
         .build();
 
-      try {
-        const output = await herokuRepl.executeCommand(command);
-        return { content: [{ type: 'text', text: output }] };
-      } catch (error) {
-        return handleCliError(error);
-      }
+      const output = await herokuRepl.executeCommand(command);
+      return handleCliOutput(output);
     }
   );
 };
@@ -328,18 +313,12 @@ export const registerTransferAppTool = (server: McpServer, herokuRepl: HerokuREP
     transferAppOptionsSchema.shape,
     async (options: TransferAppOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.TRANSFER_APP)
-        .addPositionalArguments({
-          app: options.app,
-          recipient: options.recipient
-        })
+        .addFlags({ app: options.app })
+        .addPositionalArguments({ recipient: options.recipient })
         .build();
 
-      try {
-        const output = await herokuRepl.executeCommand(command);
-        return { content: [{ type: 'text', text: output }] };
-      } catch (error) {
-        return handleCliError(error);
-      }
+      const output = await herokuRepl.executeCommand(command);
+      return handleCliOutput(output);
     }
   );
 };

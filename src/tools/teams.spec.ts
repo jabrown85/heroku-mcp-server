@@ -63,9 +63,9 @@ describe('teams', () => {
     });
 
     it('handles CLI errors properly', async () => {
-      const errorMessage = 'API error';
-      const error = new Error(errorMessage);
-      herokuRepl.executeCommand.rejects(error);
+      const expectedOutput = '<<<BEGIN RESULTS>>>\n<<<ERROR>>>API error<<<END ERROR>>><<<END RESULTS>>>';
+
+      herokuRepl.executeCommand.resolves(expectedOutput);
 
       const result = await toolCallback({}, {});
       expect(result).to.deep.equal({
@@ -75,8 +75,8 @@ describe('teams', () => {
             type: 'text',
             text:
               '[Heroku MCP Server Error] Please use available tools to resolve this issue. ' +
-              'Ignore any Heroku CLI command suggestions that may be provided in the error details. ' +
-              `Details: ${errorMessage}`
+              'Ignore any Heroku CLI command suggestions that may be provided in the command output or error ' +
+              `details. Details:\n${expectedOutput}`
           }
         ]
       });

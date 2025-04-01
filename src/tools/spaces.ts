@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { handleCliError } from '../utils/handle-cli-error.js';
+import { handleCliOutput } from '../utils/handle-cli-output.js';
 import { CommandBuilder } from '../utils/command-builder.js';
 import { TOOL_COMMAND_MAP } from '../utils/tool-commands.js';
 import { HerokuREPL } from '../repl/heroku-cli-repl.js';
@@ -47,12 +47,8 @@ export const registerListPrivateSpacesTool = (server: McpServer, herokuRepl: Her
     async (options: ListPrivateSpacesOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.LIST_PRIVATE_SPACES).addFlags({ json: options.json }).build();
 
-      try {
-        const output = await herokuRepl.executeCommand(command);
-        return { content: [{ type: 'text', text: output }] };
-      } catch (error) {
-        return handleCliError(error);
-      }
+      const output = await herokuRepl.executeCommand(command);
+      return handleCliOutput(output);
     }
   );
 };

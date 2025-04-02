@@ -3,9 +3,10 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 
 import * as pjson from '../package.json' with { type: 'json' };
+import * as apps from './tools/apps.js';
+import * as spaces from './tools/spaces.js';
+import * as teams from './tools/teams.js';
 
-import { herokuAppsFlags } from './tools/apps.js';
-import { commandBuilder } from './utils.js';
 import { HerokuREPL } from './repl/heroku-cli-repl.js';
 
 const VERSION = pjson.default.version;
@@ -13,11 +14,18 @@ const VERSION = pjson.default.version;
 const server = new McpServer({ name: 'Heroku MCP Server', version: VERSION });
 const herokuRepl = new HerokuREPL();
 
-server.tool('apps', 'Get a list of Heroku apps', herokuAppsFlags, async (flags) => {
-  const commandStr = commandBuilder('apps', flags);
-  const result = await herokuRepl.executeCommand(commandStr);
-  return { content: [{ type: 'text', text: result }] };
-});
+// App-related tools
+apps.registerListAppsTool(server, herokuRepl);
+apps.registerGetAppInfoTool(server, herokuRepl);
+apps.registerCreateAppTool(server, herokuRepl);
+apps.registerRenameAppTool(server, herokuRepl);
+apps.registerTransferAppTool(server, herokuRepl);
+
+// Space-related tools
+spaces.registerListPrivateSpacesTool(server, herokuRepl);
+
+// Team-related tools
+teams.registerListTeamsTool(server, herokuRepl);
 
 /**
  * Run the server

@@ -10,6 +10,10 @@ export const TOOL_COMMAND_MAP = {
   TRANSFER_APP: 'apps:transfer',
   GET_APP_INFO: 'apps:info',
 
+  // Maintenance mode commands
+  MAINTENANCE_ON: 'maintenance:on',
+  MAINTENANCE_OFF: 'maintenance:off',
+
   // Space-related commands
   LIST_PRIVATE_SPACES: 'spaces',
 
@@ -21,5 +25,17 @@ export const TOOL_COMMAND_MAP = {
   GET_ADDON_INFO: 'addons:info',
   CREATE_ADDON: 'addons:create',
   LIST_ADDON_SERVICES: 'addons:services',
-  LIST_ADDON_PLANS: 'addons:plans'
+  LIST_ADDON_PLANS: 'addons:plans',
+
+  // PostgreSQL commands
+  PG_PSQL: 'pg:psql',
+  PG_INFO: 'pg:info',
+  PG_PS: 'pg:ps',
+  PG_LOCKS: 'pg:locks',
+  PG_OUTLIERS: 'pg:outliers',
+  PG_CREDENTIALS: 'pg:credentials',
+  PG_KILL: 'pg:kill',
+  PG_MAINTENANCE: 'pg:maintenance',
+  PG_BACKUPS: 'pg:backups',
+  PG_UPGRADE: 'pg:upgrade'
 } as const;

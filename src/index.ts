@@ -7,6 +7,8 @@ import * as apps from './tools/apps.js';
 import * as spaces from './tools/spaces.js';
 import * as teams from './tools/teams.js';
 import * as addons from './tools/addons.js';
+import * as data from './tools/data.js';
+import * as maintenance from './tools/maintenance.js';
 
 import { HerokuREPL } from './repl/heroku-cli-repl.js';
 
@@ -22,6 +24,10 @@ apps.registerCreateAppTool(server, herokuRepl);
 apps.registerRenameAppTool(server, herokuRepl);
 apps.registerTransferAppTool(server, herokuRepl);
 
+// Maintenance mode tools
+maintenance.registerMaintenanceOnTool(server, herokuRepl);
+maintenance.registerMaintenanceOffTool(server, herokuRepl);
+
 // Space-related tools
 spaces.registerListPrivateSpacesTool(server, herokuRepl);
 
@@ -35,6 +41,17 @@ addons.registerCreateAddonTool(server, herokuRepl);
 addons.registerListAddonServicesTool(server, herokuRepl);
 addons.registerListAddonPlansTool(server, herokuRepl);
 
+// PostgreSQL-related tools
+data.registerPgPsqlTool(server, herokuRepl);
+data.registerPgInfoTool(server, herokuRepl);
+data.registerPgPsTool(server, herokuRepl);
+data.registerPgLocksTool(server, herokuRepl);
+data.registerPgOutliersTool(server, herokuRepl);
+data.registerPgCredentialsTool(server, herokuRepl);
+data.registerPgKillTool(server, herokuRepl);
+data.registerPgMaintenanceTool(server, herokuRepl);
+data.registerPgBackupsTool(server, herokuRepl);
+data.registerPgUpgradeTool(server, herokuRepl);
 /**
  * Run the server
  */

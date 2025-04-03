@@ -39,9 +39,6 @@ export const TOOL_COMMAND_MAP = {
   PG_BACKUPS: 'pg:backups',
   PG_UPGRADE: 'pg:upgrade',
 
-  // Logs commands
-  LOGS: 'logs',
-
   // Process commands
   PS: 'ps',
   PS_SCALE: 'ps:scale',
@@ -51,5 +48,7 @@ export const TOOL_COMMAND_MAP = {
   PIPELINES: 'pipelines',
   PIPELINES_CREATE: 'pipelines:create',
   PIPELINES_PROMOTE: 'pipelines:promote',
-  PIPELINES_INFO: 'pipelines:info'
+  PIPELINES_INFO: 'pipelines:info',
+  // Logs commands
+  LOGS: 'logs'
 } as const;

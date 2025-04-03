@@ -54,7 +54,13 @@ describe('handleCliOutput', () => {
       const result: McpToolResponse = handleCliOutput(output);
 
       expect(result).to.deep.equal({
-        content: [{ type: 'text', text: output }]
+        content: [
+          {
+            type: 'text',
+            text: '[Heroku MCP Server Error] Please use available tools to resolve this issue. Ignore any Heroku CLI command suggestions that may be provided in the command output or error details. Details:\nNo response from command'
+          }
+        ],
+        isError: true
       });
     });
   });

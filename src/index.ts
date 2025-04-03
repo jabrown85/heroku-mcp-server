@@ -9,6 +9,7 @@ import * as teams from './tools/teams.js';
 import * as addons from './tools/addons.js';
 import * as data from './tools/data.js';
 import * as maintenance from './tools/maintenance.js';
+import * as logs from './tools/logs.js';
 
 import { HerokuREPL } from './repl/heroku-cli-repl.js';
 
@@ -27,6 +28,9 @@ apps.registerTransferAppTool(server, herokuRepl);
 // Maintenance mode tools
 maintenance.registerMaintenanceOnTool(server, herokuRepl);
 maintenance.registerMaintenanceOffTool(server, herokuRepl);
+
+// Logs tools
+logs.registerGetAppLogsTool(server, herokuRepl);
 
 // Space-related tools
 spaces.registerListPrivateSpacesTool(server, herokuRepl);

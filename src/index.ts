@@ -6,6 +6,7 @@ import * as pjson from '../package.json' with { type: 'json' };
 import * as apps from './tools/apps.js';
 import * as spaces from './tools/spaces.js';
 import * as teams from './tools/teams.js';
+import * as addons from './tools/addons.js';
 
 import { HerokuREPL } from './repl/heroku-cli-repl.js';
 
@@ -26,6 +27,13 @@ spaces.registerListPrivateSpacesTool(server, herokuRepl);
 
 // Team-related tools
 teams.registerListTeamsTool(server, herokuRepl);
+
+// Add-on related tools
+addons.registerListAddonsTool(server, herokuRepl);
+addons.registerGetAddonInfoTool(server, herokuRepl);
+addons.registerCreateAddonTool(server, herokuRepl);
+addons.registerListAddonServicesTool(server, herokuRepl);
+addons.registerListAddonPlansTool(server, herokuRepl);
 
 /**
  * Run the server

@@ -1,7 +1,6 @@
 /**
  * Maps tool names to their corresponding Heroku CLI commands.
  * This mapping ensures consistent command usage across the application.
- *
  */
 export const TOOL_COMMAND_MAP = {
   // App-related commands
@@ -15,5 +14,12 @@ export const TOOL_COMMAND_MAP = {
   LIST_PRIVATE_SPACES: 'spaces',
 
   // Team-related commands
-  LIST_TEAMS: 'teams'
+  LIST_TEAMS: 'teams',
+
+  // Addons commands
+  LIST_ADDONS: 'addons',
+  GET_ADDON_INFO: 'addons:info',
+  CREATE_ADDON: 'addons:create',
+  LIST_ADDON_SERVICES: 'addons:services',
+  LIST_ADDON_PLANS: 'addons:plans'
 } as const;

@@ -37,6 +37,5 @@ export const TOOL_COMMAND_MAP = {
   PG_KILL: 'pg:kill',
   PG_MAINTENANCE: 'pg:maintenance',
   PG_BACKUPS: 'pg:backups',
-  PG_COPY: 'pg:copy',
   PG_UPGRADE: 'pg:upgrade'
 } as const;

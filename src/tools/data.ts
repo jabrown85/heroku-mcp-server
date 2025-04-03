@@ -12,11 +12,20 @@ import type { McpToolResponse } from '../utils/mcp-tool-response.js';
  * This schema defines the structure and validation rules for running SQL queries.
  */
 export const pgPsqlOptionsSchema = z.object({
-  command: z.string().optional().describe('SQL command to run'),
-  file: z.string().optional().describe('SQL file to run'),
+  command: z
+    .string()
+    .optional()
+    .describe(
+      'SQL command to run; file is ignored if provided; must be single line; must supply either command or file'
+    ),
+  file: z
+    .string()
+    .optional()
+    .describe(
+      'SQL file to run; command is ignored if provided; must be an absolute path; must supply either command or file'
+    ),
   credential: z.string().optional().describe('credential to use'),
   app: z.string().describe('app to run command against'),
-  remote: z.string().optional().describe('git remote of app to use'),
   database: z
     .string()
     .optional()
@@ -32,7 +41,6 @@ export type PgPsqlOptions = z.infer<typeof pgPsqlOptionsSchema>;
  */
 export const pgInfoOptionsSchema = z.object({
   app: z.string().describe('The name of the Heroku app whose database to inspect.'),
-  remote: z.string().optional().describe('git remote of app to use'),
   database: z
     .string()
     .optional()
@@ -52,7 +60,6 @@ export const pgPsOptionsSchema = z.object({
     .boolean()
     .optional()
     .describe('When true, shows additional query details including query plan and memory usage.'),
-  remote: z.string().optional().describe('git remote of app to use'),
   database: z
     .string()
     .optional()
@@ -69,7 +76,6 @@ export type PgPsOptions = z.infer<typeof pgPsOptionsSchema>;
 export const pgLocksOptionsSchema = z.object({
   app: z.string().describe('The name of the Heroku app whose database locks to view.'),
   truncate: z.boolean().optional().describe('When true, truncates queries to 40 characters.'),
-  remote: z.string().optional().describe('git remote of app to use'),
   database: z
     .string()
     .optional()
@@ -88,7 +94,6 @@ export const pgOutliersOptionsSchema = z.object({
   num: z.number().optional().describe('The number of queries to display. Defaults to 10.'),
   reset: z.boolean().optional().describe('When true, resets statistics gathered by pg_stat_statements.'),
   truncate: z.boolean().optional().describe('When true, truncates queries to 40 characters.'),
-  remote: z.string().optional().describe('git remote of app to use'),
   database: z
     .string()
     .optional()
@@ -104,7 +109,6 @@ export type PgOutliersOptions = z.infer<typeof pgOutliersOptionsSchema>;
  */
 export const pgCredentialsOptionsSchema = z.object({
   app: z.string().describe('The name of the Heroku app whose database credentials to view.'),
-  remote: z.string().optional().describe('git remote of app to use'),
   database: z
     .string()
     .optional()
@@ -120,9 +124,8 @@ export type PgCredentialsOptions = z.infer<typeof pgCredentialsOptionsSchema>;
  */
 export const pgKillOptionsSchema = z.object({
   app: z.string().describe('The name of the Heroku app whose database process to terminate.'),
-  pid: z.number().describe('The process ID to terminate, as shown by pg:ps.'),
+  pid: z.number().describe('The process ID to terminate, as shown by pg_ps.'),
   force: z.boolean().optional().describe('When true, forces immediate termination instead of graceful shutdown.'),
-  remote: z.string().optional().describe('git remote of app to use'),
   database: z
     .string()
     .optional()
@@ -137,8 +140,7 @@ export type PgKillOptions = z.infer<typeof pgKillOptionsSchema>;
  * Schema for managing database maintenance.
  */
 export const pgMaintenanceOptionsSchema = z.object({
-  app: z.string().describe('The name of the Heroku app whose maintenance to manage.'),
-  remote: z.string().optional().describe('git remote of app to use'),
+  app: z.string().describe('Show current maintenance information for the app.'),
   database: z
     .string()
     .optional()
@@ -153,32 +155,10 @@ export type PgMaintenanceOptions = z.infer<typeof pgMaintenanceOptionsSchema>;
  * Schema for managing database backups.
  */
 export const pgBackupsOptionsSchema = z.object({
-  app: z.string().describe('The name of the Heroku app whose backups to manage.'),
-  verbose: z.boolean().optional().describe('Show additional backup information.'),
-  confirm: z.string().optional().describe('Confirmation string for destructive actions.'),
-  output: z.string().optional().describe('Output format.'),
-  'wait-interval': z.string().optional().describe('Wait interval for backup operations.'),
-  at: z.string().optional().describe('Schedule backups at specified time.'),
-  quiet: z.boolean().optional().describe('Suppress output.'),
-  remote: z.string().optional().describe('git remote of app to use')
+  app: z.string().describe('The name of the Heroku app whose backups to manage.')
 });
 
 export type PgBackupsOptions = z.infer<typeof pgBackupsOptionsSchema>;
-
-/**
- * Schema for copying database data.
- */
-export const pgCopyOptionsSchema = z.object({
-  app: z.string().describe('The name of the Heroku app to run command against.'),
-  source: z.string().describe('Config var exposed to the owning app containing the source database URL.'),
-  target: z.string().describe('Config var exposed to the owning app containing the target database URL.'),
-  'wait-interval': z.string().optional().describe('Wait interval for copy operation.'),
-  verbose: z.boolean().optional().describe('Show additional copy information.'),
-  confirm: z.string().optional().describe('Confirmation string required for potentially destructive operations.'),
-  remote: z.string().optional().describe('git remote of app to use')
-});
-
-export type PgCopyOptions = z.infer<typeof pgCopyOptionsSchema>;
 
 /**
  * Schema for upgrading database version.
@@ -187,7 +167,6 @@ export const pgUpgradeOptionsSchema = z.object({
   app: z.string().describe('The name of the Heroku app whose database to upgrade.'),
   version: z.string().optional().describe('PostgreSQL version to upgrade to'),
   confirm: z.string().optional().describe('Confirmation string required for this potentially destructive operation.'),
-  remote: z.string().optional().describe('git remote of app to use'),
   database: z
     .string()
     .optional()
@@ -217,10 +196,9 @@ export const registerPgPsqlTool = (server: McpServer, herokuRepl: HerokuREPL): v
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_PSQL)
         .addFlags({
           app: options.app,
-          command: `"${options.command?.replaceAll('\n', '') ?? ''}"`,
+          command: `"${options.command?.replaceAll('\n', ' ') ?? ''}"`,
           file: options.file,
-          credential: options.credential,
-          remote: options.remote
+          credential: options.credential
         })
         .addPositionalArguments({ database: options.database })
         .build();
@@ -249,8 +227,7 @@ export const registerPgInfoTool = (server: McpServer, herokuRepl: HerokuREPL): v
     async (options: PgInfoOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_INFO)
         .addFlags({
-          app: options.app,
-          remote: options.remote
+          app: options.app
         })
         .addPositionalArguments({ database: options.database })
         .build();
@@ -280,8 +257,7 @@ export const registerPgPsTool = (server: McpServer, herokuRepl: HerokuREPL): voi
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_PS)
         .addFlags({
           app: options.app,
-          verbose: options.verbose,
-          remote: options.remote
+          verbose: options.verbose
         })
         .addPositionalArguments({ database: options.database })
         .build();
@@ -311,8 +287,7 @@ export const registerPgLocksTool = (server: McpServer, herokuRepl: HerokuREPL): 
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_LOCKS)
         .addFlags({
           app: options.app,
-          truncate: options.truncate,
-          remote: options.remote
+          truncate: options.truncate
         })
         .addPositionalArguments({ database: options.database })
         .build();
@@ -344,8 +319,7 @@ export const registerPgOutliersTool = (server: McpServer, herokuRepl: HerokuREPL
           app: options.app,
           num: options.num?.toString(),
           reset: options.reset,
-          truncate: options.truncate,
-          remote: options.remote
+          truncate: options.truncate
         })
         .addPositionalArguments({ database: options.database })
         .build();
@@ -374,8 +348,7 @@ export const registerPgCredentialsTool = (server: McpServer, herokuRepl: HerokuR
     async (options: PgCredentialsOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_CREDENTIALS)
         .addFlags({
-          app: options.app,
-          remote: options.remote
+          app: options.app
         })
         .addPositionalArguments({ database: options.database })
         .build();
@@ -405,8 +378,7 @@ export const registerPgKillTool = (server: McpServer, herokuRepl: HerokuREPL): v
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_KILL)
         .addFlags({
           app: options.app,
-          force: options.force,
-          remote: options.remote
+          force: options.force
         })
         .addPositionalArguments({
           pid: options.pid.toString(),
@@ -429,18 +401,14 @@ export const registerPgKillTool = (server: McpServer, herokuRepl: HerokuREPL): v
 export const registerPgMaintenanceTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pg_maintenance',
-    '[DESC] Manage database maintenance windows and operations\n' +
+    '[DESC] Show current maintenance information\n' +
       '[PARAM] app: <string> Target application name\n' +
-      '[OPT] database: specific DB to maintain\n' +
-      '[IMPACT] May affect availability; Includes vacuum, analyze, index rebuilds\n' +
-      '[TIMING] Schedule during low-usage periods\n' +
-      '[RELATED] pg:info (health), pg:backups (safety)',
+      '[RELATED] pg_info (health), pg_backups (safety)',
     pgMaintenanceOptionsSchema.shape,
     async (options: PgMaintenanceOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_MAINTENANCE)
         .addFlags({
-          app: options.app,
-          remote: options.remote
+          app: options.app
         })
         .addPositionalArguments({ database: options.database })
         .build();
@@ -462,57 +430,12 @@ export const registerPgBackupsTool = (server: McpServer, herokuRepl: HerokuREPL)
     'pg_backups',
     '[DESC] Manage database backups and schedules\n' +
       '[PARAM] app: <string> Target application name\n' +
-      '[OPT] at: schedule timing; verbose: detailed output; output: format control\n' +
-      '[USAGE] Create/monitor backups, manage retention\n' +
-      '[TIPS] Schedule regular backups; Verify before major operations',
+      '[USAGE] List database backups for the app.',
     pgBackupsOptionsSchema.shape,
     async (options: PgBackupsOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_BACKUPS)
         .addFlags({
-          app: options.app,
-          verbose: options.verbose,
-          confirm: options.confirm,
-          output: options.output,
-          'wait-interval': options['wait-interval'],
-          at: options.at,
-          quiet: options.quiet,
-          remote: options.remote
-        })
-        .build();
-
-      const output = await herokuRepl.executeCommand(command);
-      return handleCliOutput(output);
-    }
-  );
-};
-
-/**
- * Registers the pg:copy tool with the MCP server.
- *
- * @param server - The MCP server instance to register the tool with
- * @param herokuRepl - The Heroku REPL instance for executing commands
- */
-export const registerPgCopyTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
-  server.tool(
-    'pg_copy',
-    '[DESC] Copy database between Heroku applications\n' +
-      '[PARAM] app: <string> Target app; source: <string> Source DB; target: <string> Target DB\n' +
-      '[OPT] wait-interval: progress frequency; verbose: detailed output\n' +
-      '[SAFETY] Requires confirmation; Verify DB sizes; Create backup first\n' +
-      '[IMPACT] May require downtime; Check app compatibility',
-    pgCopyOptionsSchema.shape,
-    async (options: PgCopyOptions): Promise<McpToolResponse> => {
-      const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_COPY)
-        .addFlags({
-          app: options.app,
-          'wait-interval': options['wait-interval'],
-          verbose: options.verbose,
-          confirm: options.confirm,
-          remote: options.remote
-        })
-        .addPositionalArguments({
-          source: options.source,
-          target: options.target
+          app: options.app
         })
         .build();
 
@@ -541,8 +464,7 @@ export const registerPgUpgradeTool = (server: McpServer, herokuRepl: HerokuREPL)
         .addFlags({
           app: options.app,
           version: options.version,
-          confirm: options.confirm,
-          remote: options.remote
+          confirm: options.confirm
         })
         .addPositionalArguments({ database: options.database })
         .build();

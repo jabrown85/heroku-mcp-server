@@ -51,7 +51,6 @@ data.registerPgCredentialsTool(server, herokuRepl);
 data.registerPgKillTool(server, herokuRepl);
 data.registerPgMaintenanceTool(server, herokuRepl);
 data.registerPgBackupsTool(server, herokuRepl);
-data.registerPgCopyTool(server, herokuRepl);
 data.registerPgUpgradeTool(server, herokuRepl);
 /**
  * Run the server

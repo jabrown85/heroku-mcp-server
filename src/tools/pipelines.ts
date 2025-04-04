@@ -12,7 +12,9 @@ import type { McpToolResponse } from '../utils/mcp-tool-response.js';
  */
 export const pipelinesCreateOptionsSchema = z.object({
   name: z.string().describe('Name of the pipeline to create'),
-  stage: z.string().optional().describe('Stage of first app in pipeline (e.g., production, staging, development)'),
+  stage: z
+    enum(['development', 'staging', 'production'])
+    .describe('Stage of first app in pipeline (e.g., production, staging, development)'),
   app: z.string().optional().describe('Name of the app to add to the pipeline'),
   team: z.string().optional().describe('Team to create the pipeline in')
 });

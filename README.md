@@ -84,6 +84,7 @@ Add this to your Cursor mcp.json:
   },
 }
 ```
+
 ### Usage with [Windsurf](https://www.windsurf.com/)
 
 Add this to your Windsurf mcp_config.json:

@@ -84,6 +84,20 @@ Add this to your Cursor mcp.json:
   },
 }
 ```
+### Usage with [Windsurf](https://www.windsurf.com/)
+
+Add this to your Windsurf mcp_config.json:
+
+```json
+"mcpServers": {
+  "heroku": {
+    "command": "heroku-mcp-server",
+    "env": {
+      "HEROKU_API_KEY": "<YOUR_HEROKU_AUTH_TOKEN>"
+    }
+  },
+}
+```
 
 ## Debugging
 

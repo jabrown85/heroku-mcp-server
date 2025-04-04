@@ -47,7 +47,7 @@ export class HerokuREPL {
    *
    * @param commandTimeout the timeout for command execution
    */
-  public constructor(commandTimeout = 5000) {
+  public constructor(commandTimeout = 15_000) {
     this.commandTimeout = commandTimeout;
     this.pauseQueue();
     void this.initializeProcess();

@@ -62,11 +62,10 @@ export type PsRestartOptions = z.infer<typeof psRestartOptionsSchema>;
 export const registerPsListTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'ps_list',
-    '[DESC] List dynos for an app\n' +
-      '[PARAM] app: <string> Target application name\n' +
-      '[OPT] json: json output\n' +
-      '[USAGE] Monitor running dynos, check dyno status\n' +
-      '[RELATED] ps_scale (adjust dynos), ps_restart (restart processes)',
+    'List and monitor Heroku application dynos. Use this tool when you need to: ' +
+      '1) View all running dynos for an app, 2) Check dyno status and health, ' +
+      '3) Monitor application process states, 4) Verify dyno configurations. ' +
+      'The tool provides process visibility with optional JSON output format.',
     psListOptionsSchema.shape,
     async (options: PsListOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PS)
@@ -91,14 +90,10 @@ export const registerPsListTool = (server: McpServer, herokuRepl: HerokuREPL): v
 export const registerPsScaleTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'ps_scale',
-    '[DESC] Scale dyno quantity up or down\n' +
-      '[PARAM] app: <string> Target application name\n' +
-      '[OPT] dyno: <string> Dyno type, quantity and size (e.g., web=3:Standard-2X)\n' +
-      '[USAGE] Scale dynos up/down, resize dynos, view current formation\n' +
-      '[EXAMPLES] Scale and resize: web=3:Standard-2X worker+1\n' +
-      '          View formation: omit dyno parameter\n' +
-      '[FORMAT] TYPE=QUANTITY[:SIZE] or TYPE+/-QUANTITY[:SIZE]\n' +
-      '[RELATED] ps_list (list dynos)',
+    'Scale and resize Heroku application dynos. Use this tool when you need to: ' +
+      '1) Adjust dyno quantities up or down, 2) Change dyno sizes for performance, ' +
+      '3) View current formation details, 4) Manage resource allocation. ' +
+      'The tool handles dyno scaling with support for type-specific adjustments.',
     psScaleOptionsSchema.shape,
     async (options: PsScaleOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PS_SCALE)
@@ -123,15 +118,10 @@ export const registerPsScaleTool = (server: McpServer, herokuRepl: HerokuREPL): 
 export const registerPsRestartTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'ps_restart',
-    '[DESC] Restart app dynos\n' +
-      '[PARAM] app: <string> Target application name\n' +
-      '[OPT] dyno-name: specific dyno (e.g., web.1)\n' +
-      '      process-type: type of dynos (e.g., web)\n' +
-      '[BEHAVIOR] If neither dyno-name nor process-type specified, restarts all dynos\n' +
-      '[EXAMPLES] Restart specific dyno: --dyno-name web.1\n' +
-      '          Restart all web dynos: --process-type web\n' +
-      '          Restart all dynos: no additional parameters\n' +
-      '[RELATED] ps_list (list dynos)',
+    'Restart Heroku application processes. Use this tool when you need to: ' +
+      '1) Restart specific dynos by name, 2) Restart all dynos of a process type, ' +
+      '3) Perform full application restarts, 4) Reset dyno states selectively. ' +
+      'The tool manages process restarts with flexible targeting options.',
     psRestartOptionsSchema.shape,
     async (options: PsRestartOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PS_RESTART)

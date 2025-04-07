@@ -186,11 +186,10 @@ export type PgUpgradeOptions = z.infer<typeof pgUpgradeOptionsSchema>;
 export const registerPgPsqlTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pg_psql',
-    '[DESC] Execute SQL queries against Heroku PostgreSQL database\n' +
-      '[PARAM] app: <string> Target application name\n' +
-      '[OPT] command: SQL to execute - single line only; file: SQL file path; credential: alternate auth; database: specific DB\n' +
-      '[USAGE] Query analysis, locks investigation, schema updates\n' +
-      '[RELATED] pg:ps (verify execution), pg:locks (check blocking), pg:credentials (auth)',
+    'Execute SQL queries against Heroku PostgreSQL databases. Use this tool when you need to: ' +
+      '1) Run SQL queries for database analysis, 2) Investigate database locks and performance, ' +
+      '3) Make schema modifications or updates, 4) Execute complex database operations. ' +
+      'The tool provides direct SQL access with support for file-based queries and credential management.',
     pgPsqlOptionsSchema.shape,
     async (options: PgPsqlOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_PSQL)
@@ -218,11 +217,10 @@ export const registerPgPsqlTool = (server: McpServer, herokuRepl: HerokuREPL): v
 export const registerPgInfoTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pg_info',
-    '[DESC] Display detailed information about a Heroku PostgreSQL database\n' +
-      '[PARAM] app: <string> Target application name\n' +
-      '[OPT] database: specific DB to inspect\n' +
-      '[USAGE] Performance investigation, connection monitoring\n' +
-      '[RELATED] pg:ps (active queries), pg:backups (database health)',
+    'Display detailed information about Heroku PostgreSQL databases. Use this tool when you need to: ' +
+      '1) View comprehensive database configuration and status, 2) Monitor database performance metrics, ' +
+      '3) Check connection and resource utilization, 4) Assess database health and capacity. ' +
+      'The tool provides detailed insights into database operations and configuration.',
     pgInfoOptionsSchema.shape,
     async (options: PgInfoOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_INFO)
@@ -247,11 +245,10 @@ export const registerPgInfoTool = (server: McpServer, herokuRepl: HerokuREPL): v
 export const registerPgPsTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pg_ps',
-    '[DESC] View active queries and their execution details\n' +
-      '[PARAM] app: <string> Target application name\n' +
-      '[OPT] verbose: detailed output; database: specific DB\n' +
-      '[USAGE] Identify running queries, monitor progress, verify blocking locks\n' +
-      '[RELATED] pg:locks (check blocking), pg:outliers (analyze performance)',
+    'Monitor active database queries and processes. Use this tool when you need to: ' +
+      '1) View currently executing queries, 2) Track query progress and resource usage, ' +
+      '3) Identify long-running or blocked queries, 4) Debug performance issues in real-time. ' +
+      'The tool provides detailed visibility into database activity with optional verbose output.',
     pgPsOptionsSchema.shape,
     async (options: PgPsOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_PS)
@@ -277,11 +274,10 @@ export const registerPgPsTool = (server: McpServer, herokuRepl: HerokuREPL): voi
 export const registerPgLocksTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pg_locks',
-    '[DESC] View database locks and identify blocking transactions\n' +
-      '[PARAM] app: <string> Target application name\n' +
-      '[OPT] truncate: shorten output; database: specific DB\n' +
-      '[USAGE] Deadlock investigation, lock chain analysis\n' +
-      '[RELATED] pg:ps (blocking queries), pg:psql (detailed investigation)',
+    'Analyze database locks and blocking transactions. Use this tool when you need to: ' +
+      '1) Identify blocked queries and lock chains, 2) Investigate deadlock situations, ' +
+      '3) Monitor transaction lock states, 4) Resolve blocking issues affecting performance. ' +
+      'The tool helps diagnose and resolve database concurrency problems.',
     pgLocksOptionsSchema.shape,
     async (options: PgLocksOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_LOCKS)
@@ -307,11 +303,10 @@ export const registerPgLocksTool = (server: McpServer, herokuRepl: HerokuREPL): 
 export const registerPgOutliersTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pg_outliers',
-    '[DESC] Identify resource-intensive and long-running queries\n' +
-      '[PARAM] app: <string> Target application name\n' +
-      '[OPT] num: result limit; reset: clear stats; truncate: shorten display; database: specific DB\n' +
-      '[USAGE] Performance analysis, query optimization\n' +
-      '[TIPS] Reset periodically; Use with pg:indexes; Follow up with pg:psql',
+    'Identify resource-intensive database operations. Use this tool when you need to: ' +
+      '1) Find slow or expensive queries, 2) Analyze query performance patterns, ' +
+      '3) Optimize database workload, 4) Track query statistics over time. ' +
+      'The tool helps identify opportunities for performance optimization.',
     pgOutliersOptionsSchema.shape,
     async (options: PgOutliersOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_OUTLIERS)
@@ -339,11 +334,10 @@ export const registerPgOutliersTool = (server: McpServer, herokuRepl: HerokuREPL
 export const registerPgCredentialsTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pg_credentials',
-    '[DESC] Manage database connection credentials and access\n' +
-      '[PARAM] app: <string> Target application name\n' +
-      '[OPT] database: specific DB to manage\n' +
-      '[USAGE] Setup monitoring, configure access, rotate credentials\n' +
-      '[SECURITY] Rotate every 30-90 days; Use --reset for immediate rotation',
+    'Manage database access credentials and security. Use this tool when you need to: ' +
+      '1) View current database credentials, 2) Configure database access permissions, ' +
+      '3) Rotate credentials for security compliance, 4) Set up monitoring access. ' +
+      'The tool helps maintain secure database access and credential management.',
     pgCredentialsOptionsSchema.shape,
     async (options: PgCredentialsOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_CREDENTIALS)
@@ -368,11 +362,10 @@ export const registerPgCredentialsTool = (server: McpServer, herokuRepl: HerokuR
 export const registerPgKillTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pg_kill',
-    '[DESC] Terminate specific database processes\n' +
-      '[PARAM] app: <string> Target application name; pid: <number> Process ID to terminate\n' +
-      '[OPT] force: immediate termination; database: specific DB\n' +
-      '[SAFETY] Non-destructive to data; Use force cautiously; Verify PID with pg:ps\n' +
-      '[USAGE] Stop long queries, clear stuck processes',
+    'Terminate specific database processes. Use this tool when you need to: ' +
+      '1) Stop problematic or stuck queries, 2) Clear blocking transactions, ' +
+      '3) Manage resource-intensive operations, 4) Handle runaway processes safely. ' +
+      'The tool provides controlled process termination with optional force mode.',
     pgKillOptionsSchema.shape,
     async (options: PgKillOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_KILL)
@@ -401,9 +394,10 @@ export const registerPgKillTool = (server: McpServer, herokuRepl: HerokuREPL): v
 export const registerPgMaintenanceTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pg_maintenance',
-    '[DESC] Show current maintenance information\n' +
-      '[PARAM] app: <string> Target application name\n' +
-      '[RELATED] pg_info (health), pg_backups (safety)',
+    'Monitor database maintenance status and operations. Use this tool when you need to: ' +
+      '1) Check current maintenance windows, 2) View scheduled maintenance activities, ' +
+      '3) Track maintenance operation progress, 4) Plan database maintenance tasks. ' +
+      'The tool provides visibility into database maintenance state and scheduling.',
     pgMaintenanceOptionsSchema.shape,
     async (options: PgMaintenanceOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_MAINTENANCE)
@@ -428,9 +422,10 @@ export const registerPgMaintenanceTool = (server: McpServer, herokuRepl: HerokuR
 export const registerPgBackupsTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pg_backups',
-    '[DESC] Manage database backups and schedules\n' +
-      '[PARAM] app: <string> Target application name\n' +
-      '[USAGE] List database backups for the app.',
+    'Manage database backup operations and schedules. Use this tool when you need to: ' +
+      '1) View existing database backups, 2) Monitor backup schedules and status, ' +
+      '3) Track backup operation progress, 4) Verify backup availability. ' +
+      'The tool helps maintain database backup operations and disaster recovery readiness.',
     pgBackupsOptionsSchema.shape,
     async (options: PgBackupsOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_BACKUPS)
@@ -454,10 +449,10 @@ export const registerPgBackupsTool = (server: McpServer, herokuRepl: HerokuREPL)
 export const registerPgUpgradeTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pg_upgrade',
-    '[DESC] Upgrade a Heroku PostgreSQL database to a newer version\n' +
-      '[PARAM] app: <string> Target application name\n' +
-      '[OPT] version: new version; confirm: confirmation string; database: specific DB\n' +
-      '[USAGE] Critical operations workflow: 1) Check current version with pg:info',
+    'Upgrade PostgreSQL database version. Use this tool when you need to: ' +
+      '1) Migrate to a newer PostgreSQL version, 2) Plan version upgrade paths, ' +
+      '3) Execute controlled version migrations, 4) Verify upgrade compatibility. ' +
+      'The tool manages safe database version upgrades with confirmation protection.',
     pgUpgradeOptionsSchema.shape,
     async (options: PgUpgradeOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PG_UPGRADE)

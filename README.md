@@ -35,8 +35,11 @@ Generate a Heroku authorization token using one of these methods:
   ```sh
     heroku authorizations:create
   ```
-
-Copy the token and use it as your `HEROKU_API_KEY` in the following steps.
+- Using an existing token in the CLI
+  ```sh
+    heroku auth:token
+  ```
+  Copy the token and use it as your `HEROKU_API_KEY` in the following steps.
 
 ### Usage with [Claude Desktop](https://claude.ai/download)
 

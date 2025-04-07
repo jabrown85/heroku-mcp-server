@@ -71,8 +71,8 @@ export const registerListAppsTool = (server: McpServer, herokuRepl: HerokuREPL):
     'list_apps',
     'List Heroku applications with flexible filtering options. Use this tool when you need to: ' +
       '1) Show all apps owned by the user, 2) Show apps where the user is a collaborator (use all=true), ' +
-      '3) Filter apps by team or private space, or 4) Get detailed app metadata in JSON format. ' +
-      'The response includes app names, regions, and ownership information.',
+      '3) Filter apps by team or private space. Note: For checking app name availability, prefer using get_app_info ' +
+      'as it returns a more focused dataset. The response includes app names, regions, and ownership information.',
     listAppsOptionsSchema.shape,
     async (options: ListAppsOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.LIST_APPS)

@@ -5,6 +5,7 @@
     "lib": ["ES2024"],
     "module": "nodenext",
     "moduleResolution": "Node16",
+    "target": "ES2022",
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noUncheckedSideEffectImports": true,

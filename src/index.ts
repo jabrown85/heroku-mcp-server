@@ -11,6 +11,7 @@ import * as data from './tools/data.js';
 import * as maintenance from './tools/maintenance.js';
 import * as ps from './tools/ps.js';
 import * as pipelines from './tools/pipelines.js';
+import * as deployToHeroku from './tools/deploy-to-heroku.js';
 import * as logs from './tools/logs.js';
 
 import { HerokuREPL } from './repl/heroku-cli-repl.js';
@@ -69,6 +70,9 @@ pipelines.registerPipelinesCreateTool(server, herokuRepl);
 pipelines.registerPipelinesPromoteTool(server, herokuRepl);
 pipelines.registerPipelinesListTool(server, herokuRepl);
 pipelines.registerPipelinesInfoTool(server, herokuRepl);
+
+// Deploy-to-Heroku tool
+deployToHeroku.registerDeployToHerokuTool(server);
 
 /**
  * Run the server

@@ -68,11 +68,10 @@ export type PipelinesOptions = z.infer<typeof pipelinesOptionsSchema>;
 export const registerPipelinesCreateTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pipelines_create',
-    '[DESC] Create a new pipeline\n' +
-      '[PARAM] name: <string> Name of the pipeline\n' +
-      '[OPT] stage: initial stage; app: app to add; team: team to create in\n' +
-      '[USAGE] Setup deployment pipelines, organize apps by environment\n' +
-      '[RELATED] pipelines_add (add apps), pipelines_promote (promote apps)',
+    'Create new Heroku deployment pipelines. Use this tool when you need to: ' +
+      '1) Set up new deployment workflows, 2) Create staged application environments, ' +
+      '3) Organize apps by development stages, 4) Configure team-based pipeline structures. ' +
+      'The tool manages pipeline creation with optional team and initial app configuration.',
     pipelinesCreateOptionsSchema.shape,
     async (options: PipelinesCreateOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PIPELINES_CREATE)
@@ -99,11 +98,10 @@ export const registerPipelinesCreateTool = (server: McpServer, herokuRepl: Herok
 export const registerPipelinesPromoteTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pipelines_promote',
-    '[DESC] Promote apps in a pipeline to the next stage\n' +
-      '[PARAM] app: <string> App to promote from\n' +
-      '[OPT] to: comma separated list of apps to promote to\n' +
-      '[USAGE] Deploy to staging/production, manage app promotion flow\n' +
-      '[RELATED] pipelines_info (check status)',
+    'Promote applications through pipeline stages. Use this tool when you need to: ' +
+      '1) Deploy code to staging or production environments, 2) Manage staged releases, ' +
+      '3) Coordinate multi-app promotions, 4) Control deployment workflows. ' +
+      'The tool handles safe promotion of apps between pipeline stages.',
     pipelinesPromoteOptionsSchema.shape,
     async (options: PipelinesPromoteOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PIPELINES_PROMOTE)
@@ -128,10 +126,10 @@ export const registerPipelinesPromoteTool = (server: McpServer, herokuRepl: Hero
 export const registerPipelinesListTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pipelines_list',
-    '[DESC] List pipelines you have access to\n' +
-      '[OPT] json: json output format; team: filter by team\n' +
-      '[USAGE] View available pipelines, check pipeline ownership\n' +
-      '[RELATED] pipelines_info (pipeline details)',
+    'View available Heroku pipelines. Use this tool when you need to: ' +
+      '1) List accessible pipelines, 2) Check pipeline ownership and access, ' +
+      '3) View pipeline organization, 4) Find specific pipeline configurations. ' +
+      'The tool provides pipeline visibility with optional JSON output format.',
     pipelinesListOptionsSchema.shape,
     async (options: PipelinesListOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PIPELINES)
@@ -155,11 +153,10 @@ export const registerPipelinesListTool = (server: McpServer, herokuRepl: HerokuR
 export const registerPipelinesInfoTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pipelines_info',
-    '[DESC] Show detailed pipeline information\n' +
-      '[PARAM] pipeline: <string> Pipeline to get info for\n' +
-      '[OPT] json: output in json format\n' +
-      '[USAGE] View pipeline configuration, check app stages\n' +
-      '[RELATED] pipelines (view all)',
+    'Display detailed pipeline configuration. Use this tool when you need to: ' +
+      '1) View pipeline stage configuration, 2) Check connected applications, ' +
+      '3) Verify pipeline settings, 4) Monitor pipeline status. ' +
+      'The tool provides comprehensive pipeline information and structure details.',
     pipelinesInfoOptionsSchema.shape,
     async (options: PipelinesInfoOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.PIPELINES_INFO)
@@ -184,10 +181,10 @@ export const registerPipelinesInfoTool = (server: McpServer, herokuRepl: HerokuR
 export const registerPipelinesTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'pipelines',
-    '[DESC] List pipelines you have access to\n' +
-      '[OPT] json: output in json format\n' +
-      '[USAGE] View all accessible pipelines\n' +
-      '[RELATED] pipelines:info (pipeline details)',
+    'List and manage Heroku pipelines. Use this tool when you need to: ' +
+      '1) View all accessible pipelines, 2) Monitor pipeline configurations, ' +
+      '3) Check pipeline availability, 4) Review pipeline organization. ' +
+      'The tool provides high-level pipeline management and visibility.',
     pipelinesOptionsSchema.shape,
     async (options: PipelinesOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder('pipelines')

@@ -35,12 +35,10 @@ export type MaintenanceModeOptions = z.infer<typeof maintenanceModeOptionsSchema
 export const registerMaintenanceOnTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'maintenance_on',
-    '[DESC] Enable maintenance mode, redirecting traffic to maintenance page\n' +
-      '[PARAM] app: <string> Target application name\n' +
-      '[IMPACT] HTTP->maintenance page; WebSocket->terminated; Running processes continue; New processes suspended\n' +
-      '[USAGE] Deployments, system updates, scheduled maintenance\n' +
-      '[PREP] Schedule window, notify users, configure MAINTENANCE_PAGE_URL if needed\n' +
-      '[MONITOR] Use: heroku ps (processes), heroku logs (activity)',
+    'Enable maintenance mode for Heroku applications. Use this tool when you need to: ' +
+      '1) Redirect traffic to a maintenance page, 2) Prepare for system updates or deployments, ' +
+      '3) Schedule planned maintenance windows, 4) Gracefully handle service interruptions. ' +
+      'The tool manages traffic routing and process states while preserving running operations.',
     maintenanceModeOptionsSchema.shape,
     async (options: MaintenanceModeOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.MAINTENANCE_ON)
@@ -65,12 +63,10 @@ export const registerMaintenanceOnTool = (server: McpServer, herokuRepl: HerokuR
 export const registerMaintenanceOffTool = (server: McpServer, herokuRepl: HerokuREPL): void => {
   server.tool(
     'maintenance_off',
-    '[DESC] Disable maintenance mode, restore normal application operation\n' +
-      '[PARAM] app: <string> Target application name\n' +
-      '[IMPACT] HTTP routing restored; Dyno formation resumed; App may restart\n' +
-      '[USAGE] Post-maintenance restoration, deployment completion\n' +
-      '[VERIFY] Check: processes (heroku ps), logs (heroku logs), endpoints, error rates\n' +
-      '[AFTER] Monitor recovery, notify users of restoration',
+    'Disable maintenance mode for Heroku applications. Use this tool when you need to: ' +
+      '1) Restore normal application traffic routing, 2) Resume dyno operations after maintenance, ' +
+      '3) Complete deployment processes, 4) Verify application health after maintenance. ' +
+      'The tool handles service restoration and process resumption.',
     maintenanceModeOptionsSchema.shape,
     async (options: MaintenanceModeOptions): Promise<McpToolResponse> => {
       const command = new CommandBuilder(TOOL_COMMAND_MAP.MAINTENANCE_OFF)

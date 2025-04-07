@@ -16,6 +16,62 @@ Note: The Heroku Platform MCP Server is currently in early development. As we co
 implementation, the available functionality and tools may evolve. We welcome feedback and contributions to help shape
 the future of this project.
 
+## Available Tools
+
+### Application Management
+
+- `list_apps` - List Heroku applications with filtering options for owned apps, collaborator apps, team apps, and
+  private space apps
+- `get_app_info` - Get detailed information about an app including configuration, dynos, add-ons, and more
+- `create_app` - Create a new Heroku application with customizable settings for region, team, and private space
+- `rename_app` - Rename an existing Heroku application
+- `transfer_app` - Transfer app ownership to another user or team
+- `deploy_to_heroku` - Deploy projects to Heroku with app.json configuration, supporting team deployments, private
+  spaces, and environment setup
+
+### Process & Dyno Management
+
+- `ps_list` - List all dynos for an app
+- `ps_scale` - Scale dyno quantity up/down or resize dynos
+- `ps_restart` - Restart specific dynos, process types, or all dynos
+
+### Add-ons
+
+- `list_addons` - List all add-ons across apps or for a specific app
+- `get_addon_info` - Get detailed information about a specific add-on
+- `create_addon` - Provision a new add-on for an app
+
+### Maintenance & Logs
+
+- `maintenance_on` - Enable maintenance mode for an app
+- `maintenance_off` - Disable maintenance mode
+- `get_app_logs` - View application logs with filtering options
+
+### Pipeline Management
+
+- `pipelines_create` - Create a new pipeline
+- `pipelines_promote` - Promote apps to the next stage in a pipeline
+- `pipelines_list` - List available pipelines
+- `pipelines_info` - Get detailed pipeline information
+
+### Team & Space Management
+
+- `list_teams` - List teams you belong to
+- `list_private_spaces` - List available private spaces
+
+### PostgreSQL Database Management
+
+- `pg_psql` - Execute SQL queries against Heroku PostgreSQL database
+- `pg_info` - Display detailed database information
+- `pg_ps` - View active queries and execution details
+- `pg_locks` - View database locks and identify blocking transactions
+- `pg_outliers` - Identify resource-intensive queries
+- `pg_credentials` - Manage database credentials and access
+- `pg_kill` - Terminate specific database processes
+- `pg_maintenance` - Show database maintenance information
+- `pg_backups` - Manage database backups and schedules
+- `pg_upgrade` - Upgrade PostgreSQL to a newer version
+
 ## Installation
 
 Install the Heroku Platform MCP Server globally using npm:

@@ -401,16 +401,15 @@ export class DeployToHeroku extends AbortController {
 
     try {
       const result = await this.buildService.create(appName, payload, this.requestInit);
+      let buildOutput = '';
       if (result.output_stream_url) {
-        // logExtensionEvent(`---------- begin build output for ${app.name!} ----------`);
-        await this.captureBuildOutput(result.output_stream_url);
-        // logExtensionEvent(`----------- end build output for ${app.name!} -----------`);
+        buildOutput = await this.captureBuildOutput(result.output_stream_url);
       }
 
       const info = await this.buildService.info(appName, result.id!, this.requestInit);
       if (info.status === 'failed') {
         throw new DeploymentError(
-          `The request was sent to Heroku successfully but there was a problem with deployment: ${info.status}`,
+          `The request was sent to Heroku successfully but there was a problem with deployment: ${info.status} - ${buildOutput}`,
           appName
         );
       }

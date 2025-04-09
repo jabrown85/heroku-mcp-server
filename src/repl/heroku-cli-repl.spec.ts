@@ -1,8 +1,10 @@
 import { EventEmitter } from 'node:events';
-import * as childProcess from 'node:child_process';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { HerokuREPL } from './heroku-cli-repl.js';
+import * as pjson from '../../package.json' with { type: 'json' };
+
+const VERSION = pjson.default.version;
 
 describe('HerokuREPL', () => {
   let repl: HerokuREPL;
@@ -48,6 +50,12 @@ describe('HerokuREPL', () => {
     it('should create a new process when initialized', () => {
       expect(spawnStub.calledOnce).to.be.true;
       expect(spawnStub.firstCall.args[2].env.HEROKU_MCP_MODE).to.equal('true');
+      expect(spawnStub.firstCall.args[2].env.HEROKU_MCP_SERVER_VERSION).to.equal(VERSION);
+      expect(spawnStub.firstCall.args[2].env.HEROKU_HEADERS).to.equal(
+        JSON.stringify({
+          'User-Agent': `Heroku-MCP-Server/${VERSION} (${process.platform}; ${process.arch}; node/${process.version})`
+        })
+      );
     });
   });
 

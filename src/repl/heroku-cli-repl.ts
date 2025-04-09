@@ -1,6 +1,7 @@
 import { spawn, type ChildProcess } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import * as pjson from '../../package.json' with { type: 'json' };
 
 const heroku = path.parse(path.relative(process.cwd(), fileURLToPath(import.meta.resolve('heroku', import.meta.url))));
 const herokuRunPath = path.join(heroku.dir, '../', 'bin/run');
@@ -8,6 +9,8 @@ const herokuRunPath = path.join(heroku.dir, '../', 'bin/run');
 type CommandQueueItem = { command: string; promise: Promise<string>; resolver: (value: string) => void };
 const COMMAND_END_RESULTS_MESSAGE = '<<<END RESULTS>>>';
 const READY_MESSAGE = 'heroku >';
+const VERSION = pjson.default.version;
+
 /**
  * A class that manages a Heroku CLI REPL process
  * and allows for durably executing commands via a queue.
@@ -41,6 +44,7 @@ export class HerokuREPL {
   private pauseIteratorResolver: (() => void) | undefined;
   private readonly commandTimeout: number;
   private commandTimeoutId: NodeJS.Timeout | undefined;
+  private readonly userAgent: string = `Heroku-MCP-Server/${VERSION} (${process.platform}; ${process.arch}; node/${process.version})`;
 
   /**
    * Create a new HerokuREPL instance
@@ -139,7 +143,11 @@ export class HerokuREPL {
       signal: this.abortController.signal,
       env: {
         ...process.env,
-        HEROKU_MCP_MODE: 'true'
+        HEROKU_MCP_MODE: 'true',
+        HEROKU_MCP_SERVER_VERSION: VERSION,
+        HEROKU_HEADERS: JSON.stringify({
+          'User-Agent': this.userAgent
+        })
       }
     });
 

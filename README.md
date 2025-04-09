@@ -16,15 +16,7 @@ Note: The Heroku Platform MCP Server is currently in early development. As we co
 implementation, the available functionality and tools may evolve. We welcome feedback and contributions to help shape
 the future of this project.
 
-## Installation
-
-Install the Heroku Platform MCP Server globally using npm:
-
-```sh
-npm i -g @heroku/mcp-server
-```
-
-## Configuration
+## Installation and configuration
 
 ### Authentication Setup
 
@@ -46,11 +38,13 @@ Generate a Heroku authorization token using one of these methods:
 Add this to your `claude_desktop_config.json`:
 
 ```json
-"mcpServers": {
-  "heroku": {
-    "command": "heroku-mcp-server",
-    "env": {
-      "HEROKU_API_KEY": "<YOUR_HEROKU_AUTH_TOKEN>"
+{
+  "mcpServers": {
+    "heroku": {
+      "command": "npx -y @heroku/mcp-server",
+      "env": {
+        "HEROKU_API_KEY": "<YOUR_HEROKU_AUTH_TOKEN>"
+      }
     }
   }
 }
@@ -61,16 +55,19 @@ Add this to your `claude_desktop_config.json`:
 Add this to your Zed settings.json:
 
 ```json
-"context_servers": [
-  "heroku-mcp-server": {
-    "command": {
-      "path": "heroku-mcp-server",
-      "env": {
-        "HEROKU_API_KEY": "<YOUR_HEROKU_AUTH_TOKEN>"
+{
+  "context_servers": {
+    "heroku": {
+      "command": {
+        "path": "npx",
+        "args": ["-y", "@heroku/mcp-server"],
+        "env": {
+          "HEROKU_API_KEY": "<YOUR_HEROKU_AUTH_TOKEN>"
+        }
       }
     }
   }
-],
+}
 ```
 
 ### Usage with [Cursor](https://www.cursor.com/)
@@ -78,13 +75,15 @@ Add this to your Zed settings.json:
 Add this to your Cursor mcp.json:
 
 ```json
-"mcpServers": {
-  "heroku": {
-    "command": "heroku-mcp-server",
-    "env": {
-      "HEROKU_API_KEY": "<YOUR_HEROKU_AUTH_TOKEN>"
+{
+  "mcpServers": {
+    "heroku": {
+      "command": "npx -y @heroku/mcp-server",
+      "env": {
+        "HEROKU_API_KEY": "<YOUR_HEROKU_AUTH_TOKEN>"
+      }
     }
-  },
+  }
 }
 ```
 
@@ -93,13 +92,15 @@ Add this to your Cursor mcp.json:
 Add this to your Windsurf mcp_config.json:
 
 ```json
-"mcpServers": {
-  "heroku": {
-    "command": "heroku-mcp-server",
-    "env": {
-      "HEROKU_API_KEY": "<YOUR_HEROKU_AUTH_TOKEN>"
+{
+  "mcpServers": {
+    "heroku": {
+      "command": "npx -y @heroku/mcp-server",
+      "env": {
+        "HEROKU_API_KEY": "<YOUR_HEROKU_AUTH_TOKEN>"
+      }
     }
-  },
+  }
 }
 ```
 

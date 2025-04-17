@@ -305,3 +305,7 @@ To set up local debugging with breakpoints:
 5. Press F5 or use the **`Run and Debug`** sidebar.
 
 Note: the debugger automatically builds your TypeScript files before launching.
+
+## Deploy on Heroku
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/deploy?template=https://github.com/jabrown85/heroku-mcp-server%2Ftree%2Fjab%2Fheroku-ify)

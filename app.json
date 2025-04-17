@@ -1,0 +1,12 @@
+{
+    "name": "mcp-heroku-server",
+    "description": "Heroku server for MCP",
+    "repository": "https://github.com/heroku/heroku-mcp-server",
+    "keywords": ["node", "mcp", "heroku"],
+    "image": "heroku/nodejs",
+    "buildpacks": [
+        {
+            "url": "https://github.com/jabrown85/heroku-buildpack-nodejs#jab/remove-default-process"
+        }
+    ]
+}

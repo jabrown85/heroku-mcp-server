@@ -53,10 +53,8 @@ Add this snippet to your `claude_desktop_config.json`:
 {
   "mcpServers": {
     "heroku": {
-      "command": {
-        "path": "npx",
-        "args": ["-y", "@heroku/mcp-server"]
-      },
+      "command": "npx",
+      "args": ["-y", "@heroku/mcp-server"],
       "env": {
         "HEROKU_API_KEY": "<YOUR_HEROKU_AUTH_TOKEN>"
       }
@@ -125,7 +123,7 @@ Add this snippet to your Windsurf `mcp_config.json`:
 }
 ```
 
-### [Cline](https://cline.ai)
+### [Cline](https://cline.bot)
 
 Add this snippet to your Cline `config.json`:
 
@@ -133,10 +131,8 @@ Add this snippet to your Cline `config.json`:
 {
   "mcpServers": {
     "heroku": {
-      "command": {
-        "path": "npx",
-        "args": ["-y", "@heroku/mcp-server"]
-      },
+      "command": "npx",
+      "args": ["-y", "@heroku/mcp-server"],
       "env": {
         "HEROKU_API_KEY": "<YOUR_HEROKU_AUTH_TOKEN>"
       }
@@ -166,7 +162,7 @@ Add this snippet to your VSCode `settings.json` or `.vscode/mcp.json`:
 }
 ```
 
-### [Trae](https://trae.dev)
+### [Trae](https://trae.ai)
 
 Add this snippet to your Trae `mcp_settings.json`:
 
@@ -174,10 +170,8 @@ Add this snippet to your Trae `mcp_settings.json`:
 {
   "mcpServers": {
     "heroku": {
-      "command": {
-        "path": "npx",
-        "args": ["-y", "@heroku/mcp-server"]
-      },
+      "command": "npx",
+      "args": ["-y", "@heroku/mcp-server"],
       "env": {
         "HEROKU_API_KEY": "<YOUR_HEROKU_AUTH_TOKEN>"
       }
